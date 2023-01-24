@@ -22,4 +22,8 @@ sqlc:
 test:
 	go test -v -cover ./...
 
-.PHONY: pullimage postgres createdb dropdb migrateup migratedown sqlc
+resetdb:
+	make migratedown
+	make migrateup
+
+.PHONY: pullimage postgres createdb dropdb migrateup migratedown sqlc resetdb
