@@ -20,7 +20,7 @@ import (
 )
 
 type eqCreateUserParamsMatcher struct {
-	arg db.CreateUserParams
+	arg      db.CreateUserParams
 	password string
 }
 
@@ -29,7 +29,7 @@ func (e eqCreateUserParamsMatcher) Matches(x interface{}) bool {
 	if !ok {
 		return false
 	}
-	
+
 	err := util.CheckPassword(e.password, arg.HashedPassword)
 	if err != nil {
 		return false
@@ -59,21 +59,21 @@ func TestCreateUserApi(t *testing.T) {
 		{
 			name: "OK",
 			body: gin.H{
-				"username": user.Username,
-				"password": password,
+				"username":  user.Username,
+				"password":  password,
 				"full_name": user.FullName,
-				"email": user.Email,
+				"email":     user.Email,
 			},
 			buildStubs: func(store *mockdb.MockStore) {
-				arg := db.CreateUserParams {
+				arg := db.CreateUserParams{
 					Username: user.Username,
 					FullName: user.FullName,
-					Email: user.Email,
+					Email:    user.Email,
 				}
 				store.EXPECT().
 					CreateUser(gomock.Any(), EqCreateuserParams(arg, password)).
 					Times(1).
-					Return(user, nil)	
+					Return(user, nil)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
 				require.Equal(t, http.StatusOK, recorder.Code)

@@ -9,7 +9,7 @@ const (
 )
 
 func IsSupportedCurrency(currency string) bool {
-	switch currency{
+	switch currency {
 	case USD, EUR, CAD, INR, YEN:
 		return true
 	}
