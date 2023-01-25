@@ -25,7 +25,7 @@ func TestTransferTx(t *testing.T) {
 			result, err := store.TransferTx(ctx, TransferTxParams{
 				FromAccountID: account1.ID,
 				ToAccountID:   account2.ID,
-				Amount: 	   amount,
+				Amount:        amount,
 			})
 
 			errs <- err
@@ -98,8 +98,8 @@ func TestTransferTx(t *testing.T) {
 	updatedAccount2, err := store.GetAccount(context.Background(), account2.ID)
 	require.NoError(t, err)
 
-	require.Equal(t, account1.Balance - int64(n) * amount, updatedAccount1.Balance)
-	require.Equal(t, account2.Balance + int64(n) * amount, updatedAccount2.Balance)
+	require.Equal(t, account1.Balance-int64(n)*amount, updatedAccount1.Balance)
+	require.Equal(t, account2.Balance+int64(n)*amount, updatedAccount2.Balance)
 }
 
 func TestTransferTxDeadlock(t *testing.T) {
@@ -117,7 +117,7 @@ func TestTransferTxDeadlock(t *testing.T) {
 		fromAccount := account1.ID
 		toAccount := account2.ID
 
-		if i % 2 == 1 {
+		if i%2 == 1 {
 			fromAccount = account2.ID
 			toAccount = account1.ID
 		}
@@ -127,7 +127,7 @@ func TestTransferTxDeadlock(t *testing.T) {
 			_, err := store.TransferTx(ctx, TransferTxParams{
 				FromAccountID: fromAccount,
 				ToAccountID:   toAccount,
-				Amount: 	   amount,
+				Amount:        amount,
 			})
 
 			errs <- err

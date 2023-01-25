@@ -11,9 +11,9 @@ import (
 )
 
 func createRandomAccount(t *testing.T) Account {
-	arg := CreateAccountParams {
-		Owner: util.RandomOwner(),
-		Balance: util.RandomMoney(),
+	arg := CreateAccountParams{
+		Owner:    util.RandomOwner(),
+		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
 
@@ -48,8 +48,8 @@ func TestGetAccount(t *testing.T) {
 func TestUpdateAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
 
-	arg := UpdateAccountParams {
-		ID:		 account1.ID,
+	arg := UpdateAccountParams{
+		ID:      account1.ID,
 		Balance: util.RandomMoney(),
 	}
 
@@ -61,7 +61,7 @@ func TestUpdateAccount(t *testing.T) {
 	require.Equal(t, account1.Owner, account2.Owner)
 	require.Equal(t, account1.Currency, account2.Currency)
 	require.Equal(t, arg.Balance, account2.Balance)
-	
+
 	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
 }
 
@@ -81,8 +81,8 @@ func TestListAccounts(t *testing.T) {
 		createRandomAccount(t)
 	}
 
-	arg := ListAccountsParams {
-		Limit: 5,
+	arg := ListAccountsParams{
+		Limit:  5,
 		Offset: 5,
 	}
 
@@ -97,13 +97,13 @@ func TestListAccounts(t *testing.T) {
 
 func TestAddAccountBalance(t *testing.T) {
 	account := createRandomAccount(t)
-	arg := AddAccountBalanceParams {
+	arg := AddAccountBalanceParams{
 		Amount: util.RandomMoney(),
-		ID: account.ID,
+		ID:     account.ID,
 	}
 	updatedAccount, err := testQueries.AddAccountBalance(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, updatedAccount)
 
-	require.Equal(t, arg.Amount, updatedAccount.Balance - account.Balance)
+	require.Equal(t, arg.Amount, updatedAccount.Balance-account.Balance)
 }

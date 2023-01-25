@@ -10,10 +10,10 @@ import (
 )
 
 func createRandomTransfer(t *testing.T, account1, account2 Account) Transfer {
-	arg := CreateTransferParams {
+	arg := CreateTransferParams{
 		FromAccountID: account1.ID,
-		ToAccountID: account2.ID,
-		Amount: util.RandomMoney(),
+		ToAccountID:   account2.ID,
+		Amount:        util.RandomMoney(),
 	}
 
 	transfer, err := testQueries.CreateTransfer(context.Background(), arg)
