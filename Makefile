@@ -38,4 +38,7 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/dhruv-1001/go-simple-bank/db/sqlc Store
 
-.PHONY: pullimage postgres createdb dropdb migrateup migrateup1 migratedown migratedown1 sqlc resetdb server mock
+format:
+	gofmt -s -w .
+
+.PHONY: pullimage postgres createdb dropdb migrateup migrateup1 migratedown migratedown1 sqlc resetdb server mock format

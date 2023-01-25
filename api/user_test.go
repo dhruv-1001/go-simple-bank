@@ -166,6 +166,23 @@ func TestCreateUserApi(t *testing.T) {
 				require.Equal(t, http.StatusBadRequest, recorder.Code)
 			},
 		},
+		{
+			name: "TooLongPassword",
+			body: gin.H{
+				"username": user.Username,
+				"password": "1234567812345678123456781234567812345678123456781234567812345678123456781",
+				"full_name": user.FullName,
+				"email": user.Email,
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().
+					CreateUser(gomock.Any(), gomock.Any()).
+					Times(0)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusInternalServerError, recorder.Code)
+			},
+		},
 	}
 
 	for i := range testCases {
