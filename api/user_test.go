@@ -169,10 +169,10 @@ func TestCreateUserApi(t *testing.T) {
 		{
 			name: "TooLongPassword",
 			body: gin.H{
-				"username": user.Username,
-				"password": "1234567812345678123456781234567812345678123456781234567812345678123456781",
+				"username":  user.Username,
+				"password":  "1234567812345678123456781234567812345678123456781234567812345678123456781",
 				"full_name": user.FullName,
-				"email": user.Email,
+				"email":     user.Email,
 			},
 			buildStubs: func(store *mockdb.MockStore) {
 				store.EXPECT().

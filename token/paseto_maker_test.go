@@ -4,18 +4,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/dhruv-1001/go-simple-bank/util"
 	"github.com/stretchr/testify/require"
 )
 
-func TestJWTMaker(t *testing.T) {
+func TestPaestoMaker(t *testing.T) {
 
-	maker, err := NewJWTMaker(util.RandomString(10))
+	maker, err := NewPasetoMaker(util.RandomString(10))
 	require.Error(t, err)
 	require.Nil(t, maker)
 
-	maker, err = NewJWTMaker(util.RandomString(32))
+	maker, err = NewPasetoMaker(util.RandomString(32))
 	require.NoError(t, err)
 
 	username := util.RandomOwner()
@@ -38,8 +37,8 @@ func TestJWTMaker(t *testing.T) {
 	require.WithinDuration(t, expiredAt, payload.ExpiredAt, time.Second)
 }
 
-func TestJWTExpiredToken(t *testing.T) {
-	maker, err := NewJWTMaker(util.RandomString(32))
+func TestPasetoToken(t *testing.T) {
+	maker, err := NewPasetoMaker(util.RandomString(32))
 	require.NoError(t, err)
 
 	token, err := maker.CreateToken(util.RandomOwner(), -time.Minute)
@@ -52,18 +51,15 @@ func TestJWTExpiredToken(t *testing.T) {
 	require.Nil(t, payload)
 }
 
-func TestInvalidJWTTokenAlgNone(t *testing.T) {
-	payload, err := NewPayload(util.RandomOwner(), time.Minute)
+func TestPrintPaseto(t *testing.T) {
+	maker, err := NewPasetoMaker(util.RandomString(32))
 	require.NoError(t, err)
 
-	jwtToken := jwt.NewWithClaims(jwt.SigningMethodNone, payload)
-	token, err := jwtToken.SignedString(jwt.UnsafeAllowNoneSignatureType)
+	token, err := maker.CreateToken(util.RandomOwner(), -time.Minute)
 	require.NoError(t, err)
+	require.NotEmpty(t, token)
 
-	maker, err := NewJWTMaker(util.RandomString(32))
-	require.NoError(t, err)
-
-	payload, err = maker.VerifyToken(token)
+	payload, err := maker.VerifyToken(token + "a")
 	require.Error(t, err)
 	require.EqualError(t, err, ErrInvalidToken.Error())
 	require.Nil(t, payload)
