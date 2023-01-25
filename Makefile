@@ -26,4 +26,7 @@ resetdb:
 	make migratedown
 	make migrateup
 
-.PHONY: pullimage postgres createdb dropdb migrateup migratedown sqlc resetdb
+server:
+	go run main.go
+
+.PHONY: pullimage postgres createdb dropdb migrateup migratedown sqlc resetdb server
