@@ -29,4 +29,7 @@ resetdb:
 server:
 	go run main.go
 
-.PHONY: pullimage postgres createdb dropdb migrateup migratedown sqlc resetdb server
+mock:
+	mockgen -package mockdb -destination db/mock/store.go github.com/dhruv-1001/go-simple-bank/db/sqlc Store
+
+.PHONY: pullimage postgres createdb dropdb migrateup migratedown sqlc resetdb server mock
