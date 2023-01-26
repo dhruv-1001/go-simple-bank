@@ -116,9 +116,9 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	loginUserResponse := LoginUserResponse {
+	loginUserResponse := LoginUserResponse{
 		AccessToken: accessToken,
-		User: newUserResponse(user),
+		User:        newUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, loginUserResponse)
 }
