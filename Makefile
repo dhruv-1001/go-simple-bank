@@ -1,14 +1,18 @@
 pullimage:
-	docker pull postgres:15.1
+	docker pull postgres:15.1-alpine3.17
 
 postgres:
-	docker run --name postgres-simple-bank --network bank-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=123456 -d postgres:15.1
+	docker run --name postgres --network bank-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=123456 -d postgres:15.1-alpine3.17
 
 createdb:
-	docker exec -it postgres-simple-bank createdb --username=root --owner=root simple_bank
+	docker exec -it postgres createdb --username=root --owner=root simple_bank
 
 dropdb:
-	docker exec -it postgres-simple-bank dropdb simple_bank
+	docker exec -it postgres dropdb simple_bank
+
+dockerrunserver:
+	docker build -t simplebank:latest .
+	docker run --name simplebank --network bank-network -p 8080:8080 -e GIN_MODE=release -e DB_SOURCE="postgresql://root:123456@postgres:5432/simple_bank?sslmode=disable" simplebank:latest
 
 migrateup:
 	migrate -path db/migration -database "postgresql://root:123456@localhost:5432/simple_bank?sslmode=disable" -verbose up
@@ -41,4 +45,4 @@ mock:
 format:
 	gofmt -s -w .
 
-.PHONY: pullimage postgres createdb dropdb migrateup migrateup1 migratedown migratedown1 sqlc resetdb server mock format
+.PHONY: pullimage postgres createdb dropdb dockerrunserver migrateup migrateup1 migratedown migratedown1 sqlc resetdb server mock format
